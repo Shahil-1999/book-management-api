@@ -7,7 +7,7 @@ const getAllBooks = async (req, res, next) => {
     const books = await BookService.getAllBooks();
     return res.json({
       status: true,
-      msg: "Book records fetched successfully",
+      message: "Book records fetched successfully",
       data: books,
       statusCode: 200,
     });
@@ -22,7 +22,7 @@ const getBookById = async (req, res, next) => {
     const book = await BookService.getBookById(id);
     return res.json({
       status: true,
-      msg: "Book record fetched successfully",
+      message: "Book record fetched successfully",
       data: book,
       statusCode: 200,
     });
@@ -37,7 +37,7 @@ const createBook = async (req, res, next) => {
     const book = await BookService.createBook({ title, author, publishedYear });
     return res.json({
       status: true,
-      msg: "Book record created successfully",
+      message: "Book record created successfully",
       data: book,
       statusCode: 201,
     });
@@ -57,7 +57,7 @@ const updateBook = async (req, res, next) => {
     });
     return res.json({
       status: true,
-      msg: "Book record updated successfully",
+      message: "Book record updated successfully",
       data: book,
       statusCode: 200,
     });
@@ -72,7 +72,7 @@ const deleteBook = async (req, res, next) => {
     await BookService.deleteBook(id);
     return res.json({
       status: true,
-      msg: "Book record deleted successfully",
+      message: "Book record deleted successfully",
       statusCode: 200,
     });
   } catch (error) {
@@ -83,7 +83,7 @@ const deleteBook = async (req, res, next) => {
 const importBooks = async (req, res, next) => {
   try {
     if (!req.file) {
-      throw new AppError("CSV file is required", 400);
+      throw new AppError("CSV file is required", 400, false);
     }
 
     if (
@@ -101,8 +101,10 @@ const importBooks = async (req, res, next) => {
       importedCount = importedBooks.length;
     }
 
-    res.status(200).json({
-      status: "Book records imported successfully",
+    res.json({
+      message: "Book records imported successfully",
+      statusCode: 200,
+      status: true,
       data: {
         imported: importedCount,
         errors: errors.length > 0 ? errors : null,

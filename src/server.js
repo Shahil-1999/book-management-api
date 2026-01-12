@@ -18,16 +18,18 @@ app.use('/books', bookRoutes);
 
 // Health check
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 'success',
+  return res.json({
+    status: true,
+    statusCode: 200,
     message: 'Book Management API is running',
   });
 });
 
 // 404 handler
 app.use((req, res) => {
-  res.status(404).json({
-    status: 'error',
+  return res.json({
+    status: false,
+    statusCode: 404,
     message: 'Route not found',
   });
 });

@@ -1,6 +1,5 @@
-const { stat } = require("fs");
-
 const AppError = (message, statusCode, status) => {
+  console.log('Creating AppError:', { message, statusCode, status });
   const error = new Error(message);
   error.statusCode = statusCode;
   error.status = status;
@@ -10,7 +9,7 @@ const AppError = (message, statusCode, status) => {
 
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
-  const status = err.name === "AppError" ? "error" : "error";
+  const status = err.status;
   const message = err.message || "Internal Server Error";
   return res.json({
     status,

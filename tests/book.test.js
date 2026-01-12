@@ -14,19 +14,14 @@ describe('Book API Tests', () => {
     await sequelize.close();
   });
 
-  // Cleanup: Clear all books after each test
-  afterEach(async () => {
-    await Book.destroy({ where: {}, force: true });
-  });
-
   // GET all books tests
   describe('GET /books', () => {
     test('GET /books should return empty list', async () => {
       const response = await request(app).get('/books');
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe(true);
-      expect(response.body.data.length).toBe(0);
+      expect(response.body.status).toBe(false);
+      expect(response.body.statusCode).toBe(404);
     });
 
     test('GET /books should return all books', async () => {
@@ -70,7 +65,7 @@ describe('Book API Tests', () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('error');
+      expect(response.body.status).toBe(false);
     });
 
     test('POST /books should fail with invalid year', async () => {
@@ -81,7 +76,7 @@ describe('Book API Tests', () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('error');
+      expect(response.body.status).toBe(false);
     });
   });
 
@@ -108,7 +103,7 @@ describe('Book API Tests', () => {
       const response = await request(app).get('/books/invalid-id-123');
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('error');
+      expect(response.body.status).toBe(false);
     });
   });
 
@@ -143,7 +138,7 @@ describe('Book API Tests', () => {
       });
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('error');
+      expect(response.body.status).toBe(false);
     });
   });
 
@@ -170,13 +165,13 @@ describe('Book API Tests', () => {
       // Verify book is gone
       const getResponse = await request(app).get(`/books/${bookId}`);
       expect(getResponse.status).toBe(200);
-      expect(getResponse.body.status).toBe('error');
+      expect(getResponse.body.status).toBe(false);
     });
     test('DELETE /books/:id should return 404 for invalid id', async () => {
       const response = await request(app).delete('/books/invalid-id-123');
 
       expect(response.status).toBe(200);
-      expect(response.body.status).toBe('error');
+      expect(response.body.status).toBe(false);
     });
   });
 });

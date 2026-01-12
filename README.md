@@ -93,10 +93,10 @@ The Lord of the Rings,J.R.R. Tolkien,1954
 
 ```
 PORT=3000
-DB_HOST=localhost
-DB_USER=root
-DB_PASSWORD=password
-DB_NAME=book_management_db
+DB_HOST=YOUR_DB_HOST
+DB_USER=YOUR_DB_USER
+DB_PASSWORD=YOUR_DB_PASSWORD
+DB_NAME=YOUR_DB_NAME
 NODE_ENV=development
 ```
 
@@ -114,7 +114,6 @@ NODE_ENV=development
 
 ```bash
 npm test              # Run tests
-npm test -- --coverage  # With coverage
 npm run test:watch    # Watch mode
 ```
 
@@ -152,7 +151,7 @@ npm run test:watch   # Watch mode
 ```json
 {
   "status": true,
-  "msg": "Book record created successfully",
+  "message": "Book record created successfully",
   "data": {
     /* book object */
   },
@@ -165,7 +164,7 @@ npm run test:watch   # Watch mode
 ```json
 {
   "status": false,
-  "statusCode": 400,
+  "statusCode": 404,
   "message": "Error description"
 }
 ```

@@ -4,9 +4,13 @@ const { AppError } = require("../middleware/errorHandler");
 const getAllBooks = async () => {
   try {
     const books = await Book.findAll();
+    if (!books?.length) {
+      throw AppError("Book records not found", 404, false);
+    }
     return books;
   } catch (error) {
-    throw AppError(`Failed to fetch books: ${error.message}`, 500, false);
+    if (error && error.name === "AppError") throw error;
+    throw AppError(`Failed to fetch book: ${error.message}`, 500, false);
   }
 };
 
@@ -14,7 +18,7 @@ const getBookById = async (id) => {
   try {
     const book = await Book.findByPk(id);
     if (!book) {
-      throw AppError("Book not found", 404, false);
+      throw AppError("Book record not found", 404, false);
     }
     return book;
   } catch (error) {
@@ -64,7 +68,7 @@ const updateBook = async (id, bookData) => {
   try {
     const book = await Book.findByPk(id);
     if (!book) {
-      throw AppError("Book not found", 404, false);
+      throw AppError("Book record not found", 404, false);
     }
 
     const { title, author, publishedYear } = bookData;
@@ -101,16 +105,16 @@ const updateBook = async (id, bookData) => {
 const deleteBook = async (id) => {
   try {
     const book = await Book.findByPk(id);
-    
+
     if (!book) {
-      throw AppError("Book not found", 404, false);
+      throw AppError("Book record not found", 404, false);
     }
 
     await book.destroy();
     return book;
   } catch (error) {
     if (error && error.name === "AppError") throw error;
-    throw AppError(`Failed to delete book: ${error.message}`, 500);
+    throw AppError(`Failed to delete book: ${error.message}`, 500, false);
   }
 };
 
